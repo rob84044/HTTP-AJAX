@@ -32,7 +32,7 @@ const Friend = props => {
             style={{ borderRadius: '15px' }}
           >
             <CardTitle style={{ verticalAlign: 'middle', paddingTop: '10px' }}>
-              This is one of my Friends, their name is {name}
+              Meet {name} they are one of my many friends!
             </CardTitle>
           </Card>
         </CardHeader>

@@ -12,7 +12,11 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 
 class App extends Component {
@@ -21,12 +25,39 @@ class App extends Component {
     this.state = {
       friends: [],
       errorMessage: '',
-      modal: false
+      modal: false,
+      addFriendMessage: '',
+      addFriendError: '',
+      updateFriendMessage: '',
+      updateFriendError: '',
+      deleteFriendMessage: '',
+      deleteFriendError: '',
+      showForm: 'add',
+      dropdownOpen: false
     };
 
-    this.toggle = this.toggle.bind(this);
+    this.addToggle = this.addToggle.bind(this);
+
+    this.decideButton = this.decideButton.bind(this);
   }
-  toggle() {
+
+  changeTabs = tab => {
+    this.setState({
+      showForm: tab,
+      addFriendMessage: '',
+      addFriendError: '',
+      updateFriendMessage: '',
+      updateFriendError: '',
+      deleteFriendMessage: '',
+      deleteFriendError: ''
+    });
+  };
+  decideButton() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
+  }
+  addToggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
@@ -45,17 +76,50 @@ class App extends Component {
     return (
       <div className="App">
         <div className="addFriend" style={{ paddingTop: '20px' }}>
+          <Dropdown isOpen={this.state.dropdownOpen} toggle={this.decideButton}>
+            <DropdownToggle caret>
+              What changes would you like to make?
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem header>Choose from the options below</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <Button
+                  style={{ width: '100%' }}
+                  color="info"
+                  onClick={this.addToggle}
+                >
+                  Add a Friend
+                </Button>
+              </DropdownItem>
+              <DropdownItem>
+                <Button
+                  style={{ width: '100%' }}
+                  color="info"
+                  onClick={this.updateToggle}
+                >
+                  Update a friends info
+                </Button>
+              </DropdownItem>
+              <DropdownItem>
+                <Button
+                  style={{ width: '100%' }}
+                  color="info"
+                  onClick={this.deleteToggle}
+                >
+                  Kill..I mean delete a friend
+                </Button>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+
           <Form>
-            Would you like to add a friend?{' '}
-            <Button outline color="info" onClick={this.toggle}>
-              Yes, I am lonely!
-            </Button>
             <Modal
               isOpen={this.state.modal}
-              toggle={this.toggle}
+              toggle={this.addToggle}
               className={this.props.className}
             >
-              <ModalHeader toggle={this.toggle}>
+              <ModalHeader toggle={this.addToggle}>
                 Don't be lonely! Add a friend.
               </ModalHeader>
               <ModalBody>
@@ -88,10 +152,10 @@ class App extends Component {
                 </FormGroup>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={this.toggle}>
+                <Button color="primary" onClick={this.addToggle}>
                   Do Something
                 </Button>{' '}
-                <Button color="secondary" onClick={this.toggle}>
+                <Button color="secondary" onClick={this.addToggle}>
                   Cancel
                 </Button>
               </ModalFooter>

@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardLink,
+  CardTitle,
+  CardSubtitle
+} from 'reactstrap';
 
 export default class FriendForm extends Component {
   constructor() {
@@ -9,6 +17,14 @@ export default class FriendForm extends Component {
     };
   }
   render() {
-    return <div className="FriendForm" />;
+    return (
+      <div className="FriendForm">
+        <Card>
+          <CardBody>
+            <CardTitle>This is one of my Friends</CardTitle>
+          </CardBody>
+        </Card>
+      </div>
+    );
   }
 }

@@ -18,16 +18,18 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
-
+import AddForm from '../src/components/AddForm';
+import UpdateForm from '../src/components/UpdateForm';
+import DeleteForm from '../src/components/DeleteForm';
 class App extends Component {
   constructor() {
     super();
     this.state = {
       friends: [],
       errorMessage: '',
-      addModal: false,
       updateModal: false,
       deleteModal: false,
+      addModal: false,
       addFriendMessage: '',
       addFriendError: '',
       updateFriendMessage: '',
@@ -78,6 +80,30 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  updateFriend = (e, friend) => {
+    axios
+      .put(`http://localhost:5000/friends/${friend.id}`, friend)
+      .then(res => {
+        this.setState({ friends: res.data });
+
+        this.updateToggle();
+
+        this.props.history.push('/');
+      })
+      .catch(err => console.log(err));
+  };
+
+  deleteFriend = (e, friend) => {
+    axios
+      .delete(`http://localhost:5000/friends/${friend.id}`)
+      .then(res => {
+        this.setState({ friends: res.data });
+        this.deleteToggle();
+        this.props.history.push('/');
+      })
+      .catch(err => console.log(err));
+  };
+
   addToggle() {
     this.setState(prevState => ({
       addModal: !prevState.addModal
@@ -118,9 +144,11 @@ class App extends Component {
   handleFriendSubmit = e => {
     this.addFriend(e, this.state.friend);
     this.setState(prevState => ({
-      name: '',
-      age: '',
-      email: '',
+      friend: {
+        name: '',
+        age: '',
+        email: ''
+      },
       addModal: !prevState.addModal
     }));
   };
@@ -166,111 +194,36 @@ class App extends Component {
             </DropdownMenu>
           </Dropdown>
           {/* Add a Friend Modal */}
-          <Form onSubmit={this.handleFriendSubmit}>
-            <Modal
-              isOpen={this.state.addModal}
-              toggle={this.addToggle}
-              className={this.props.className}
-            >
-              <ModalHeader toggle={this.addToggle}>
-                Don't be lonely! Add a friend.
-              </ModalHeader>
-              <ModalBody>
-                <FormGroup>
-                  <Label for="name">Name</Label>
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    onChange={this.friendChangeHandler}
-                    value={this.state.friend.name}
-                    placeholder="Whats their name?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="age">Age</Label>
-                  <Input
-                    type="number"
-                    name="age"
-                    id="age"
-                    onChange={this.friendChangeHandler}
-                    value={this.state.friend.age}
-                    placeholder="Whats their age?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="email">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    onChange={this.friendChangeHandler}
-                    value={this.state.friend.email}
-                    placeholder="Whats their email?"
-                  />
-                </FormGroup>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.handleFriendSubmit}>
-                  Add a friend
-                </Button>{' '}
-                <Button color="secondary" onClick={this.addToggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
-          </Form>
+
+          <AddForm
+            addModal={this.state.addModal}
+            addToggle={this.addToggle}
+            handleFriendSubmit={this.handleFriendSubmit}
+            friendChangeHandler={this.friendChangeHandler}
+            friend={this.state.friend}
+          />
+
           {/* Update a Friend Modal */}
-          <Form>
-            <Modal
-              isOpen={this.state.updateModal}
-              toggle={this.updateToggle}
-              className={this.props.className}
-            >
-              <ModalHeader toggle={this.updateToggle}>
-                Your friend is morphing!
-              </ModalHeader>
-              <ModalBody>
-                <FormGroup>
-                  <Label for="name">Name</Label>
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Whats their name?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="age">Age</Label>
-                  <Input
-                    type="number"
-                    name="age"
-                    id="age"
-                    placeholder="Whats their age?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="email">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Whats their email?"
-                  />
-                </FormGroup>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.updateToggle}>
-                  Do Something
-                </Button>{' '}
-                <Button color="secondary" onClick={this.updateToggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
-          </Form>
+          <UpdateForm
+            updateModal={this.state.updateModal}
+            updateToggle={this.updateToggle}
+            handleFriendSubmit={this.handleFriendSubmit}
+            friendChangeHandler={this.friendChangeHandler}
+            friend={this.state.friend}
+            friends={this.state.friends}
+            updateFriend={this.updateFriend}
+          />
           {/* Delete a Friend Modal */}
-          <Form>
+          <DeleteForm
+            deleteModal={this.state.deleteModal}
+            deleteToggle={this.deleteToggle}
+            handleFriendSubmit={this.handleFriendSubmit}
+            friendChangeHandler={this.friendChangeHandler}
+            friend={this.state.friend}
+            friends={this.state.friends}
+            deleteFriend={this.deleteFriend}
+          />
+          {/* <Form>
             <Modal
               isOpen={this.state.deleteModal}
               toggle={this.deleteToggle}
@@ -317,7 +270,7 @@ class App extends Component {
                 </Button>
               </ModalFooter>
             </Modal>
-          </Form>
+          </Form> */}
         </div>
         {this.state.friends.map(friend => (
           <div key={friend.id} className="friend-Parent-Container">

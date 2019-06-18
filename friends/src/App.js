@@ -223,54 +223,6 @@ class App extends Component {
             friends={this.state.friends}
             deleteFriend={this.deleteFriend}
           />
-          {/* <Form>
-            <Modal
-              isOpen={this.state.deleteModal}
-              toggle={this.deleteToggle}
-              className={this.props.className}
-            >
-              <ModalHeader toggle={this.deleteToggle}>
-                You don't need them anyways!
-              </ModalHeader>
-              <ModalBody>
-                <FormGroup>
-                  <Label for="name">Name</Label>
-                  <Input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Whats their name?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="age">Age</Label>
-                  <Input
-                    type="number"
-                    name="age"
-                    id="age"
-                    placeholder="Whats their age?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="email">Email</Label>
-                  <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Whats their email?"
-                  />
-                </FormGroup>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={this.deleteToggle}>
-                  Do Something
-                </Button>{' '}
-                <Button color="secondary" onClick={this.deleteToggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
-          </Form> */}
         </div>
         {this.state.friends.map(friend => (
           <div key={friend.id} className="friend-Parent-Container">

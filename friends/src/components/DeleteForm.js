@@ -16,7 +16,7 @@ import {
   Col
 } from 'reactstrap';
 
-export default class UpdateForm extends React.Component {
+export default class DeleteForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +93,7 @@ export default class UpdateForm extends React.Component {
                 });
               }}
             >
-              Update
+              Delete
             </Button>{' '}
             <Button color="secondary" onClick={this.props.deleteToggle}>
               Cancel
